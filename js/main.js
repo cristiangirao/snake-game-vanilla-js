@@ -10,8 +10,8 @@ let food = {
 }
 
 snake[0] = {
-    positionSnakeX: 8 * box,
-    positionSnakeY: 8 * box
+    positionX: 8 * box,
+    positionY: 8 * box
 }
 
 
@@ -23,19 +23,19 @@ function createBackground(){
 function createSnake(){
     for(let i = 0; i < snake.length; i++){
         context.fillStyle = 'green';
-        context.fillRect(snake[i].positionSnakeX , snake[i].positionSnakeY, box, box);
+        context.fillRect(snake[i].positionX , snake[i].positionY, box, box);
     }
 }
 
 function manageMarginCrossing(){
-    if(snake[0].positionSnakeX > (15 * box) && direction === "right"){
-        snake[0].positionSnakeX = 0;
-    }else if(snake[0].positionSnakeX < 0 && direction === "left"){
-        snake[0].positionSnakeX = (15 * box);
-    }else if(snake[0].positionSnakeY > (15 * box) && direction === "down"){
-        snake[0].positionSnakeY = 0;
-    }else if(snake[0].positionSnakeY < 0 && direction === "up"){
-        snake[0].positionSnakeY = (15 * box);
+    if(snake[0].positionX > (15 * box) && direction === "right"){
+        snake[0].positionX = 0;
+    }else if(snake[0].positionX < 0 && direction === "left"){
+        snake[0].positionX = (15 * box);
+    }else if(snake[0].positionY > (15 * box) && direction === "down"){
+        snake[0].positionY = 0;
+    }else if(snake[0].positionY < 0 && direction === "up"){
+        snake[0].positionY = (15 * box);
     }
 }
 
@@ -58,33 +58,49 @@ function drawFood(){
     context.fillRect(food.positionX, food.positionY,  box, box);
 }
 
+function generateNewFood(){
+    food.positionX = Math.floor(Math.random() * 15 + 1 ) * box;
+    food.positionY = Math.floor(Math.random() * 15 + 1 ) * box;
+}
+
+function verifyIfAte(snakePositionX = 0,snakePositionY = 0,foodPositionX = 0,foodPositionY = 0){
+    if(snakePositionX !== foodPositionX || snakePositionY != foodPositionY){
+        snake.pop();
+    } else {
+        generateNewFood();
+    }
+    const newHead = {
+        positionX: snakePositionX,
+        positionY: snakePositionY
+    };
+    snake.unshift(newHead);   
+}
+
+function manageDirection(){
+    let snakePositionX  = snake[0].positionX;
+    let snakePositionY  = snake[0].positionY;
+    let foodPositionX   = food.positionX;
+    let foodPositionY   = food.positionY;
+
+    if(direction === "right"){
+        snakePositionX += box;
+    } else if(direction === "left"){
+        snakePositionX -= box;
+    } else if(direction === "up"){
+        snakePositionY -= box;
+    } else if(direction === "down"){
+        snakePositionY += box;
+    }
+
+    verifyIfAte(snakePositionX,snakePositionY,foodPositionX,foodPositionY);
+}
+
 function startGame(){
-    manageMarginCrossing();
     createBackground();
     createSnake();
     drawFood();
-
-    let positionSnakeX = snake[0].positionSnakeX;
-    let positionSnakeY = snake[0].positionSnakeY;
-
-    if(direction === "right"){
-        positionSnakeX += box;
-    } else if(direction === "left"){
-        positionSnakeX -= box;
-    } else if(direction === "up"){
-        positionSnakeY -= box;
-    } else if(direction === "down"){
-        positionSnakeY += box;
-    }
-
-    snake.pop();
-
-    const newHead = {
-        positionSnakeX,
-        positionSnakeY
-    };
-
-    snake.unshift(newHead);
+    manageMarginCrossing();
+    manageDirection();
 }
 
 document.addEventListener('keydown', updateDirection);
