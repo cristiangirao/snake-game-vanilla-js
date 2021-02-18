@@ -1,8 +1,12 @@
 let canvas = document.getElementById('background-game');
 let context = canvas.getContext('2d');
+const boardColor = '#3FB480';
+const snakeColor = '#FF7F50';
+const foodColor  = '#FFFF00';
 let direction = 'right';
 let box = 32;
 let snake = [];
+let score = 0;
 
 let food = {
     positionX: Math.floor(Math.random() * 15 + 1 ) * box,
@@ -18,13 +22,13 @@ function createSnakeDefaultValues(){
 }
 
 function createBackground(){
-    context.fillStyle = 'lightgreen';
+    context.fillStyle = boardColor;
     context.fillRect(0 , 0, 16 * box, 16 * box);
 }
 
 function createSnake(){
     for(let i = 0; i < snake.length; i++){
-        context.fillStyle = 'green';
+        context.fillStyle = snakeColor;
         context.fillRect(snake[i].positionX , snake[i].positionY, box, box);
     }
 }
@@ -56,7 +60,7 @@ function updateDirection(event){
 }
 
 function drawFood(){
-    context.fillStyle = "red";
+    context.fillStyle = foodColor;
     context.fillRect(food.positionX, food.positionY,  box, box);
 }
 
@@ -69,6 +73,7 @@ function verifyIfAte(snakePositionX = 0,snakePositionY = 0,foodPositionX = 0,foo
     if(snakePositionX !== foodPositionX || snakePositionY != foodPositionY){
         snake.pop();
     } else {
+        incrementScore();
         generateNewFood();
     }
     const newHead = {
@@ -83,7 +88,18 @@ function checkCrash(){
     if(crashes.length){
         clearInterval();
         createSnakeDefaultValues();
+        setDefaultScore();
     }
+}
+
+function setDefaultScore(){
+    score = 0;
+    document.getElementById('span-score').innerHTML = score;   
+}
+
+function incrementScore(){
+    score ++;
+    document.getElementById('span-score').innerHTML = score;
 }
 
 function manageDirection(){
