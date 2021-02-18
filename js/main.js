@@ -9,11 +9,13 @@ let food = {
     positionY: Math.floor(Math.random() * 15 + 1 ) * box
 }
 
-snake[0] = {
-    positionX: 8 * box,
-    positionY: 8 * box
+function createSnakeDefaultValues(){
+    snake = [];
+    snake[0] = {
+        positionX: 8 * box,
+        positionY: 8 * box
+    }
 }
-
 
 function createBackground(){
     context.fillStyle = 'lightgreen';
@@ -76,6 +78,14 @@ function verifyIfAte(snakePositionX = 0,snakePositionY = 0,foodPositionX = 0,foo
     snake.unshift(newHead);   
 }
 
+function checkCrash(){
+    const crashes = snake.filter((e,i)=> e.positionX == snake[0].positionX && e.positionY == snake[0].positionY && i > 0);   
+    if(crashes.length){
+        clearInterval();
+        createSnakeDefaultValues();
+    }
+}
+
 function manageDirection(){
     let snakePositionX  = snake[0].positionX;
     let snakePositionY  = snake[0].positionY;
@@ -101,7 +111,10 @@ function startGame(){
     drawFood();
     manageMarginCrossing();
     manageDirection();
+    checkCrash();
 }
+
+createSnakeDefaultValues();
 
 document.addEventListener('keydown', updateDirection);
 
