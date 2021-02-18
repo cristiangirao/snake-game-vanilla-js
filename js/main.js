@@ -4,6 +4,11 @@ let direction = 'right';
 let box = 32;
 let snake = [];
 
+let food = {
+    positionX: Math.floor(Math.random() * 15 + 1 ) * box,
+    positionY: Math.floor(Math.random() * 15 + 1 ) * box
+}
+
 snake[0] = {
     positionSnakeX: 8 * box,
     positionSnakeY: 8 * box
@@ -49,13 +54,15 @@ function updateDirection(event){
 }
 
 function drawFood(){
-    
+    context.fillStyle = "red";
+    context.fillRect(food.positionX, food.positionY,  box, box);
 }
 
 function startGame(){
     manageMarginCrossing();
     createBackground();
     createSnake();
+    drawFood();
 
     let positionSnakeX = snake[0].positionSnakeX;
     let positionSnakeY = snake[0].positionSnakeY;
