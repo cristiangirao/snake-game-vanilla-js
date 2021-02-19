@@ -24,12 +24,27 @@ body {
     display: flex;
     width: 50%;
     flex-direction: column;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.div-info h1 {
+    color: #3FB480;
+}
+
+.div-info h3 {
+    color: #3FB480;
 }
 
 .snake-board {
     display: flex;
     width: 50%;
     flex-direction: column;
+}
+
+#span-score {
+/*    const boardColor = '#3FB480';
+const snakeColor = '#FF7F50';*/
+    color: #FFFF00;
 }
 
 @media only screen and (max-width : 600px) {

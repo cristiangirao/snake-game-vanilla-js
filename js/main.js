@@ -65,12 +65,12 @@ function drawFood(){
 }
 
 function generateNewFood(){
-    food.positionX = Math.floor(Math.random() * 15 + 1 ) * box;
-    food.positionY = Math.floor(Math.random() * 15 + 1 ) * box;
+    food.positionX = Math.floor(Math.random() * 15 ) * box;
+    food.positionY = Math.floor(Math.random() * 15 ) * box;
 }
 
 function verifyIfAte(snakePositionX = 0,snakePositionY = 0,foodPositionX = 0,foodPositionY = 0){
-    if(snakePositionX !== foodPositionX || snakePositionY != foodPositionY){
+    if(snakePositionX !== foodPositionX || snakePositionY !== foodPositionY){
         snake.pop();
     } else {
         incrementScore();
